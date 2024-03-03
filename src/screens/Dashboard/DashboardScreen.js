@@ -31,6 +31,7 @@ export default function () {
     <ScrollView
       style={{ backgroundColor: Colors.pageBackground }}
       contentContainerStyle={styles.container}
+      className="gap-y-2"
       refreshControl={
         <RefreshControl onRefresh={onRefresh} refreshing={loading} />
       }>

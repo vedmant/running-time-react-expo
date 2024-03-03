@@ -1,7 +1,7 @@
 {
   "expo": {
     "name": "RunningTime",
-    "slug": "RunningTime",
+    "slug": "running-time",
     "scheme": "running-time",
     "version": "1.0.0",
     "orientation": "portrait",
@@ -26,6 +26,18 @@
     },
     "web": {
       "favicon": "./assets/favicon.png"
+    },
+    "extra": {
+      "eas": {
+        "projectId": "678b95b0-2b7f-4c48-8fc2-4ce227c10a82"
+      }
+    },
+    "owner": "vedmant",
+    "runtimeVersion": {
+      "policy": "appVersion"
+    },
+    "updates": {
+      "url": "https://u.expo.dev/678b95b0-2b7f-4c48-8fc2-4ce227c10a82"
     }
   }
 }

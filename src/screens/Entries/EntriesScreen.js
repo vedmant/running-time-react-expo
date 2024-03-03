@@ -48,7 +48,7 @@ export default function () {
 
   function renderItem (item) {
     return (
-      <Panel style={styles.item}>
+      <Panel style={styles.item} className="my-1">
         <View style={{ flex: 1, flexDirection: 'row' }}>
           <View style={{ flex: 1 }}>
             <Text style={styles.distance}>
