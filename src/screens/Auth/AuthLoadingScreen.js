@@ -1,27 +1,29 @@
 import React, { useEffect } from 'react'
-import { connect } from 'react-redux'
 import { View, StyleSheet, ActivityIndicator } from 'react-native'
-import { checkLogin } from '../../actions/auth'
-import Colors from '../../constants/Colors'
+import Colors from '@/constants/Colors'
+import { useAuthStore } from '@/stores/auth'
+import { useNavigation } from '@react-navigation/native'
 
-const stateToProps = state => ({
-  me: state.auth.me,
-  accessToken: state.auth.accessToken,
-})
+export default function () {
+  const navigation = useNavigation()
 
-export default connect(stateToProps)(({ dispatch, navigation, accessToken }) => {
   useEffect(() => {
-    dispatch(checkLogin())
-      .then(() => navigation.navigate('Main'))
-      .catch(() => navigation.navigate('Auth'))
-  }, [])
+    console.log('AuthLoadingScreen');
+
+    (async () => {
+      if (! (await useAuthStore.getState().checkLogin())) {
+        console.log('no user')
+        navigation.navigate('Auth')
+      }
+    })()
+  })
 
   return (
     <View style={styles.container}>
       <ActivityIndicator animating size="large" />
     </View>
   )
-})
+}
 
 const styles = StyleSheet.create({
   container: {

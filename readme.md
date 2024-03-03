@@ -12,7 +12,7 @@ Demo login: `user@gmail.com` and password: `123456`
 
 * Based on Expo
 * Simple and clean code
-* Redux with redux-thunk
+* Zustand
 * Auth flow: login and registration
 * Dashboard tab with panels and charts
 * Entries list tab
@@ -29,7 +29,7 @@ git clone https://github.com/vedmant/running-time-react # To clone repo
 cd running-time-react
 yarn # Install dependencies
 
-yarn start # Start dev server
+yarn dev # Start dev server
 ```
 
 It will open Expo tab in your browser where you can select to run it on Android or iOS emulator or real Android device using barcode.

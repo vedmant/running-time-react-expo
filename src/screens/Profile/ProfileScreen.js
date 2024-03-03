@@ -1,26 +1,28 @@
 import React from 'react'
-import { StyleSheet } from 'react-native'
-import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
-import { logout } from '../../actions/auth'
-import { connect } from 'react-redux'
-import Button from '../../components/Button'
+import { ScrollView, StyleSheet } from 'react-native'
 import ProfileForm from './ProfileForm'
-import Colors from '../../constants/Colors'
+import Colors from '@/constants/Colors'
+import { useAuthStore } from '@/stores/auth'
+import { SignOut } from 'phosphor-react-native'
+import Button from '@/components/Button'
 
-function ProfileScreen(props) {
+export default function () {
   return (
-    <KeyboardAwareScrollView style={styles.container} enableOnAndroid>
-      <Button onPress={() => {
-        props.dispatch(logout())
-        props.navigation.navigate('Auth')
-      }}>Logout</Button>
-      <ProfileForm {...props} message="Successfully updated profile" button="Update" />
-    </KeyboardAwareScrollView>
+    <ScrollView style={styles.container}>
+      <Button
+        labe="Logout"
+        style={{ marginBottom: 20 }}
+        icon={() => <SignOut weight={'bold'} size={18} color={'white'} />}
+        onPress={() => {
+          useAuthStore.getState().logout()
+        }}
+      />
+      <ProfileForm
+        message="Successfully updated profile"
+        button="Update"
+      />
+    </ScrollView>
   )
-}
-
-ProfileScreen.navigationOptions = {
-  title: 'Profile',
 }
 
 const styles = StyleSheet.create({
@@ -30,7 +32,3 @@ const styles = StyleSheet.create({
     backgroundColor: Colors.pageBackground,
   },
 })
-
-export default connect(state => ({
-  me: state.auth.me,
-}))(ProfileScreen)

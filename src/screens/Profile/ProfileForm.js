@@ -1,15 +1,29 @@
 import React, { useState } from 'react'
-import { View } from 'react-native'
-import { TextField } from 'react-native-material-textfield'
 import Toast from 'react-native-root-toast'
-import { updateProfile } from '../../actions/auth'
-import Button from '../../components/Button'
-import Panel from '../../components/Panel'
+import Panel from '@/components/Panel'
+import { User } from 'phosphor-react-native'
+import { useAuthStore } from '@/stores/auth'
+import { useNavigation } from '@react-navigation/native'
+import InputGroup from '@/components/InputGroup'
+import Button from '@/components/Button'
 
-const initialErrors = { name: [], email: [], password: [], password_confirmation: [] }
+const initialErrors = {
+  name: [],
+  email: [],
+  password: [],
+  password_confirmation: [],
+}
 
-export default ProfileForm = ({ dispatch, navigation, me }) => {
-  const initialValues = { name: me.name, email: me.email, password: '', password_confirmation: '' }
+export default function () {
+  const navigation = useNavigation()
+  const me = useAuthStore.getState().me
+
+  const initialValues = {
+    name: me.name,
+    email: me.email,
+    password: '',
+    password_confirmation: '',
+  }
 
   const [loading, setLoading] = useState(false)
   const [form, setForm] = useState({ ...initialValues })
@@ -20,7 +34,7 @@ export default ProfileForm = ({ dispatch, navigation, me }) => {
   const onSubmit = async () => {
     setLoading(true)
     try {
-      await dispatch(updateProfile({ id: me.id, form }))
+      await useAuthStore.getState().updateProfile({ id: me.id, form })
       Toast.show('Successfully updated profile')
       navigation.navigate('Main')
     } catch (e) {
@@ -36,38 +50,43 @@ export default ProfileForm = ({ dispatch, navigation, me }) => {
 
   return (
     <Panel header="My Profile">
-      <TextField
-        label='Name'
+      <InputGroup
+        label="Name"
         onChangeText={val => updateForm({ name: val })}
         value={form.name}
-        autoCompleteType="name"
-        error={errors.name[0]}
+        error={errors.name?.[0]}
       />
-      <TextField
-        label='Email'
+      <InputGroup
+        label="Email"
         onChangeText={val => updateForm({ email: val })}
         value={form.email}
+        error={errors.email?.[0]}
         autoCompleteType="email"
-        error={errors.email[0]}
+        style={{marginTop: 10}}
       />
-      <TextField
-        label='Password'
+      <InputGroup
+        label="Password"
         onChangeText={val => updateForm({ password: val })}
         value={form.password}
-        error={errors.password[0]}
-        autoCompleteType='password'
+        error={errors.password?.[0]}
+        autoCompleteType="password"
         secureTextEntry={true}
+        style={{marginTop: 10}}
       />
-      <TextField
-        label='Password confirmation'
+      <InputGroup
+        label="Password confirmation"
         onChangeText={val => updateForm({ password_confirmation: val })}
         value={form.password_confirmation}
-        error={errors.password_confirmation[0]}
-        autoCompleteType='password'
+        error={errors.password_confirmation?.[0]}
+        autoCompleteType="password"
         secureTextEntry={true}
+        style={{marginTop: 10}}
       />
-      <View style={{ paddingTop: 20 }} />
-      <Button onPress={onSubmit} isLoading={loading}>Update</Button>
+      <Button
+        label="Update"
+        icon={<User weight={'bold'} size={18} color={'white'} />}
+        onPress={onSubmit} loading={loading}>
+      </Button>
     </Panel>
   )
 }

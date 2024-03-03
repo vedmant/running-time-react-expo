@@ -1,22 +1,24 @@
-import React, { Component } from 'react'
+import React from 'react'
 import { StyleSheet, View } from 'react-native'
-import { connect } from 'react-redux'
-import Panel from '../../components/Panel'
-import Colors from '../../constants/Colors'
+import Panel from '@/components/Panel'
+import Colors from '@/constants/Colors'
 import EntryForm from './EntryForm'
+import { useNavigation, useRoute } from '@react-navigation/native'
 
-function EditEntryScreen({ dispatch, navigation }) {
+export default function () {
+  const navigation = useNavigation()
+  const route = useRoute()
+
   return (
     <View style={styles.container}>
       <Panel>
-        <EntryForm dispatch={dispatch} item={navigation.getParam('item')} onSuccess={() => navigation.goBack()} />
+        <EntryForm
+          item={route.params.item}
+          onSuccess={() => navigation.goBack()}
+        />
       </Panel>
     </View>
   )
-}
-
-EditEntryScreen.navigationOptions = {
-  title: 'Edit Entry',
 }
 
 const styles = StyleSheet.create({
@@ -26,5 +28,3 @@ const styles = StyleSheet.create({
     backgroundColor: Colors.pageBackground,
   },
 })
-
-export default connect()(EditEntryScreen)

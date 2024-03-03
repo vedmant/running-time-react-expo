@@ -1,66 +1,70 @@
 import React, { useState } from 'react'
-import { StyleSheet, View } from 'react-native'
-import { TextField } from 'react-native-material-textfield'
+import { View } from 'react-native'
 import Toast from 'react-native-root-toast'
-import { login } from '../../actions/auth'
-import Button from '../../components/Button'
-import Panel from '../../components/Panel'
+import Panel from '@/components/Panel'
+import { Lock, User } from 'phosphor-react-native'
+import { useAuthStore } from '@/stores/auth'
+import InputGroup from '@/components/InputGroup'
+import Button from '@/components/Button'
 
 const initialErrors = { email: [], password: [] }
 const initialValues = { email: 'user@gmail.com', password: '123456' }
 
-export default LoginTab = ({ dispatch, navigation }) => {
+export default function () {
   const [loading, setLoading] = useState(false)
   const [form, setForm] = useState({ ...initialValues })
   const [errors, setErrors] = useState(initialErrors)
 
-  const updateForm = data => setForm(Object.assign(form, data))
+  const updateForm = data => setForm({ ...form, ...data })
 
   const onSubmit = async () => {
     setLoading(true)
     try {
-      await dispatch(login(form))
+      await useAuthStore.getState().login(form)
       Toast.show('Successfully logged in')
-      navigation.navigate('Main')
     } catch (e) {
+      if (! e.response) {
+        throw e
+      }
       if (e.response && e.response.data && e.response.data.errors) {
         setErrors({ ...initialErrors, ...e.response.data.errors })
       } else {
         setErrors({ ...initialErrors, email: [e.response.data.message] })
       }
       Toast.show(e.response.data.message)
+    } finally {
       setLoading(false)
     }
   }
 
   return (
-    <View style={styles.scene}>
+    <View className="p-2">
       <Panel>
-        <TextField
-          label='Email'
-          onChangeText={val => updateForm({ email: val })}
+        <InputGroup
+          label="Email"
+          icon={<User />}
+          onChangeText={v => updateForm({ email: v })}
           value={form.email}
-          error={errors.email[0]}
+          error={errors.email?.[0]}
           autoCompleteType="email"
         />
-        <TextField
-          label='Password'
-          onChangeText={val => updateForm({ password: val })}
+        <InputGroup
+          label="Password"
+          icon={<Lock />}
+          onChangeText={v => updateForm({ password: v })}
           value={form.password}
-          error={errors.password[0]}
-          autoCompleteType='password'
+          error={errors.password?.[0]}
+          autoCompleteType="password"
           secureTextEntry={true}
         />
-        <View style={{ paddingTop: 20 }} />
-        <Button onPress={onSubmit} isLoading={loading}>Login</Button>
+        <Button
+          label="Login"
+          icon={<User />}
+          onPress={onSubmit}
+          loading={loading}
+          className="mt-4"
+        />
       </Panel>
     </View>
   )
 }
-
-const styles = StyleSheet.create({
-  scene: {
-    flex: 1,
-    padding: 10,
-  },
-})
