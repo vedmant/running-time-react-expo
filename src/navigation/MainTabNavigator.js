@@ -11,10 +11,10 @@ import { createBottomTabNavigator } from '@react-navigation/bottom-tabs'
 const Stack = createStackNavigator()
 
 function EntriesStack () {
-  return (<Stack.Navigator>
-    <Stack.Screen name="ListEntries" component={EntriesScreen} options={{ title: 'Entries List' }} />
-    <Stack.Screen name="EditEntry" component={EditEntryScreen} options={{ title: 'Edit Entry' }}  />
-    <Stack.Screen name="AddEntry" component={AddEntryScreen} options={{ title: 'Add Entry' }}  />
+  return (<Stack.Navigator screenOptions={{ headerShown: false }}>
+    <Stack.Screen name="ListEntries" component={EntriesScreen} />
+    <Stack.Screen name="EditEntry" component={EditEntryScreen} />
+    <Stack.Screen name="AddEntry" component={AddEntryScreen} />
   </Stack.Navigator>)
 }
 

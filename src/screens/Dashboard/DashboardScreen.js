@@ -70,7 +70,7 @@ export default function () {
         </Text>
       </Panel>
       {dashboard?.week_chart?.length ? (
-        <Panel header="My Performance" bodyStyle={{ padding: 0 }}>
+        <Panel header="My Performance" bodyStyle={{ padding: 0 }} className="overflow-hidden">
           <LineChart
             data={{
               labels: dashboard.week_chart.map(i => i[0]),

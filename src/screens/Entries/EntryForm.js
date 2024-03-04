@@ -78,7 +78,6 @@ export default function ({ onSuccess, item }) {
         error={errors.distance?.[0]}
         mode="outlined"
         keyboardType="number-pad"
-        style={{marginTop: 10}}
       />
       <InputGroup
         label="Time"
@@ -87,7 +86,6 @@ export default function ({ onSuccess, item }) {
         error={errors.time?.[0]}
         mode="outlined"
         onFocus={() => setTimePickerVisibility(true)}
-        style={{marginTop: 10}}
       />
       <DateTimePicker
         isVisible={isDatePickerVisible}
@@ -98,7 +96,6 @@ export default function ({ onSuccess, item }) {
           setDatePickerVisibility(false)
         }}
         onCancel={() => setDatePickerVisibility(false)}
-        style={{marginTop: 10}}
       />
       <DateTimePicker
         isVisible={isTimePickerVisible}
@@ -109,7 +106,6 @@ export default function ({ onSuccess, item }) {
           setTimePickerVisibility(false)
         }}
         onCancel={() => setTimePickerVisibility(false)}
-        style={{marginTop: 10}}
       />
       <View style={{ paddingTop: 20 }} />
       <Button label="Submit" mode="contained" onPress={onSubmit} loading={loading} />

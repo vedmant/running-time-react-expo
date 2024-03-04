@@ -10,9 +10,9 @@ export default function () {
   return (
     <ScrollView style={styles.container}>
       <Button
-        labe="Logout"
-        style={{ marginBottom: 20 }}
-        icon={() => <SignOut weight={'bold'} size={18} color={'white'} />}
+        label="Logout"
+        className="mb-4"
+        icon={<SignOut weight={'bold'} size={18} color={'white'} />}
         onPress={() => {
           useAuthStore.getState().logout()
         }}

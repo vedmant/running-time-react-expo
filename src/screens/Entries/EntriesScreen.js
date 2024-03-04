@@ -48,7 +48,7 @@ export default function () {
 
   function renderItem (item) {
     return (
-      <Panel style={styles.item} className="my-1">
+      <Panel style={styles.item} className="mb-2">
         <View style={{ flex: 1, flexDirection: 'row' }}>
           <View style={{ flex: 1 }}>
             <Text style={styles.distance}>
@@ -104,11 +104,11 @@ export default function () {
         keyExtractor={item => item.id + ''}
         refreshControl={
           <RefreshControl
-            onRefresh={() => loadEntries()}
+            onRefresh={loadEntries}
             refreshing={loading}
           />
         }
-        onEndReached={() => loadMore()}
+        onEndReached={loadMore}
         onEndReachedThreshold={0.5}
         ListFooterComponent={renderFooter}
         ListEmptyComponent={
@@ -120,13 +120,8 @@ export default function () {
         }
       />
       <Button
-        style={styles.addButton}
-        icon={<Plus
-          size={24}
-          color={'white'}
-          weight={'bold'}
-          style={{ paddingLeft: 4, paddingTop: 2 }}
-        />}
+        className="shadow-lg absolute bottom-0 right-0 m-4"
+        icon={<Plus className="ml-1" size={24} color={'white'} weight={'bold'} />}
         onPress={() => navigation.navigate('AddEntry')}
       />
     </View>

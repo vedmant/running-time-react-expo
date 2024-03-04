@@ -62,7 +62,6 @@ export default function () {
         value={form.email}
         error={errors.email?.[0]}
         autoCompleteType="email"
-        style={{marginTop: 10}}
       />
       <InputGroup
         label="Password"
@@ -71,7 +70,6 @@ export default function () {
         error={errors.password?.[0]}
         autoCompleteType="password"
         secureTextEntry={true}
-        style={{marginTop: 10}}
       />
       <InputGroup
         label="Password confirmation"
@@ -80,7 +78,6 @@ export default function () {
         error={errors.password_confirmation?.[0]}
         autoCompleteType="password"
         secureTextEntry={true}
-        style={{marginTop: 10}}
       />
       <Button
         label="Update"
