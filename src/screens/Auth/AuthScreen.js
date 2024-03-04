@@ -1,8 +1,9 @@
 import { useState } from 'react'
-import { Text, useWindowDimensions, View } from 'react-native'
+import { useWindowDimensions } from 'react-native'
 import LoginTab from './LoginTab'
 import RegisterTab from './RegisterTab'
 import { TabView, SceneMap, TabBar } from 'react-native-tab-view'
+import { SafeAreaView } from 'react-native-safe-area-context'
 
 const renderScene = SceneMap({
   login: LoginTab,
@@ -27,7 +28,7 @@ export default function () {
   ])
 
   return (
-    <View style={{ flex: 1 }}>
+    <SafeAreaView style={{ flex: 1 }}>
       <TabView
         navigationState={{ index, routes }}
         renderScene={renderScene}
@@ -35,6 +36,6 @@ export default function () {
         initialLayout={{ width: layout.width }}
         renderTabBar={renderTabBar}
       />
-    </View>
+    </SafeAreaView>
   )
 }

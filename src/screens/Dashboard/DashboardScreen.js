@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useState } from 'react'
 import { Dimensions, RefreshControl, StyleSheet, Text, View, ScrollView } from 'react-native'
 import { LineChart } from 'react-native-chart-kit'
 import Panel from '@/components/Panel'
