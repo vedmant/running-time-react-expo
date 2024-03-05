@@ -1,4 +1,4 @@
-# Running Time #
+# Running Time App #
 
 ## React Native Sample Project ##
 
@@ -10,9 +10,10 @@ Demo login: `user@gmail.com` and password: `123456`
 
 ### Main features ###
 
+* Simple and clean code - easy to understand for a begginer
 * Based on Expo
-* Simple and clean code
-* Zustand
+* Using Nativewind styling
+* Zustand store
 * Auth flow: login and registration
 * Dashboard tab with panels and charts
 * Entries list tab
@@ -25,28 +26,25 @@ Demo login: `user@gmail.com` and password: `123456`
 ### Installation ###
 
 ```bash
-git clone https://github.com/vedmant/running-time-react # To clone repo
-cd running-time-react
-yarn # Install dependencies
+git clone https://github.com/vedmant/running-time-react-expo # To clone repo
+cd running-time-react-expo
+bun i # Install dependencies
 
-yarn dev # Start dev server
+bun dev # Start dev server
 ```
 
 It will open Expo tab in your browser where you can select to run it on Android or iOS emulator or real Android device using barcode.
 
 ### TODO ###
 
-- Migrate from Expo to bare React Native
-- Replace timepicker with better solution
 - Add Eslinter
 - Better login / register screens design
 - Reports tab
-- Refactor code
-- Splash screen and app icon
 - Unit tests
-- Continuous integration
 - Dark theme
 - Background GPS tracking (start / stop, create record after finish)
+- Admin panel for admin user
+- Continuos integration setup
 
 ### License ###
 

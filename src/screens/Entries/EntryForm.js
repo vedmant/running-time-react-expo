@@ -68,7 +68,6 @@ export default function ({ onSuccess, item }) {
         onChangeText={val => updateForm({ date: val })}
         value={form.date}
         error={errors.date?.[0]}
-        mode="outlined"
         onFocus={() => setDatePickerVisibility(true)}
       />
       <InputGroup
@@ -76,22 +75,21 @@ export default function ({ onSuccess, item }) {
         onChangeText={val => updateForm({ distance: val })}
         value={form.distance + ''}
         error={errors.distance?.[0]}
-        mode="outlined"
-        keyboardType="number-pad"
+        keyboardType="numeric"
+        append="km"
       />
       <InputGroup
         label="Time"
         onChangeText={val => updateForm({ time: val })}
         value={form.time}
         error={errors.time?.[0]}
-        mode="outlined"
         onFocus={() => setTimePickerVisibility(true)}
+        keyboardType="number-pad"
       />
       <DateTimePicker
         isVisible={isDatePickerVisible}
         mode="date"
         onConfirm={date => {
-          console.log(dayjs(date).format('MM/DD/YYYY'))
           updateForm({ date: dayjs(date).format('MM/DD/YYYY') })
           setDatePickerVisibility(false)
         }}
@@ -101,10 +99,11 @@ export default function ({ onSuccess, item }) {
         isVisible={isTimePickerVisible}
         mode="time"
         onConfirm={date => {
-          console.log(date)
           updateForm({ time: dayjs(date).format('HH:mm:ss') })
           setTimePickerVisibility(false)
         }}
+        locale="en_GB"
+        date={new Date(new Date().setHours(0, 0, 0, 0))}
         onCancel={() => setTimePickerVisibility(false)}
       />
       <View style={{ paddingTop: 20 }} />

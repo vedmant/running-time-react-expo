@@ -3,7 +3,7 @@
     "name": "RunningTime",
     "slug": "running-time",
     "scheme": "running-time",
-    "version": "1.0.0",
+    "version": "1.2.0",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
     "userInterfaceStyle": "light",
@@ -16,13 +16,16 @@
       "**/*"
     ],
     "ios": {
-      "supportsTablet": true
+      "supportsTablet": true,
+      "bundleIdentifier": "com.vedmant.running-time"
     },
     "android": {
+      "ersionCode": 3145732,
       "adaptiveIcon": {
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#ffffff"
-      }
+      },
+      "package": "com.vedmant.runningtime"
     },
     "web": {
       "favicon": "./assets/favicon.png"

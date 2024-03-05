@@ -1,9 +1,8 @@
 import dayjs from 'dayjs'
 import { useEffect, useState } from 'react'
-import { Alert, FlatList, RefreshControl, StyleSheet, Text, View, ActivityIndicator } from 'react-native'
+import { Alert, FlatList, RefreshControl, Text, View, ActivityIndicator } from 'react-native'
 import Panel from '@/components/Panel'
 import SmallButton from '@/components/SmallButton'
-import Colors from '@/constants/Colors'
 import { Pencil, Plus, Trash } from 'phosphor-react-native'
 import { useEntriesStore } from '@/stores/entries'
 import { useNavigation } from '@react-navigation/native'
@@ -48,25 +47,24 @@ export default function () {
 
   function renderItem (item) {
     return (
-      <Panel style={styles.item} className="mb-2">
-        <View style={{ flex: 1, flexDirection: 'row' }}>
-          <View style={{ flex: 1 }}>
-            <Text style={styles.distance}>
+      <Panel className="mb-2">
+        <View className="flex flex-row">
+          <View className="flex-1">
+            <Text>
               Date: {dayjs(item.date).format('MM/DD/YY')}
             </Text>
-            <Text style={styles.distance}>Distance: {item.distance} km</Text>
-            <Text style={styles.distance}>Time: {item.time}</Text>
+            <Text>Distance: {item.distance} km</Text>
+            <Text>Time: {item.time}</Text>
           </View>
           <View style={{ flex: 1 }}>
-            <Text style={styles.distance}>
+            <Text>
               Avg. Speed: {Math.round(item.speed * 10) / 10}
             </Text>
-            <Text style={styles.distance}>
+            <Text>
               Avg. Pace: {Math.round(item.pace * 10) / 10}
             </Text>
           </View>
-          <View
-            style={styles.actionButtons}>
+          <View className="flex items-start flex-col gap-2">
             <SmallButton
               onPress={() => navigation.navigate('EditEntry', { item })}
             >
@@ -87,33 +85,29 @@ export default function () {
     }
 
     return (
-      <View
-        style={styles.loadingView}>
+      <View>
         <ActivityIndicator animating size="large" />
       </View>
     )
   }
 
   return (
-    <View style={{ flex: 1 }}>
+    <View className="flex-1">
       <FlatList
+        className="flex-1"
         data={entries.data}
-        style={{ backgroundColor: Colors.pageBackground }}
-        contentContainerStyle={styles.container}
+        contentContainerStyle={{padding: 10}}
         renderItem={({ item }) => renderItem(item)}
         keyExtractor={item => item.id + ''}
         refreshControl={
-          <RefreshControl
-            onRefresh={loadEntries}
-            refreshing={loading}
-          />
+          <RefreshControl onRefresh={loadEntries} refreshing={loading} />
         }
         onEndReached={loadMore}
         onEndReachedThreshold={0.5}
         ListFooterComponent={renderFooter}
         ListEmptyComponent={
           loading ? null : (
-            <View style={{ alignItems: 'center' }}>
+            <View className="justify-center flex-1 flex-row">
               <Text>The list is empty</Text>
             </View>
           )
@@ -127,33 +121,3 @@ export default function () {
     </View>
   )
 }
-
-const styles = StyleSheet.create({
-  container: {
-    paddingLeft: 10,
-    paddingRight: 10,
-    paddingTop: 10,
-    backgroundColor: Colors.pageBackground,
-  },
-  addButton: {
-    backgroundColor: Colors.primary,
-    position: 'absolute',
-    margin: 16,
-    right: 0,
-    bottom: 0,
-  },
-  actionButtons: {
-    alignItems: 'flex-start',
-    justifyContent: 'flex-center',
-    flexDirection: 'col',
-    gap: 5,
-  },
-  loadingView: {
-    flex: 1,
-    paddingVertical: 10,
-    marginTop: 10,
-    marginBottom: 10,
-  },
-  item: {},
-  distance: {},
-})

@@ -5,7 +5,8 @@
   "scripts": {
     "dev": "expo start",
     "android": "expo run:android",
-    "ios": "expo run:ios",
+    "android-build": "expo run:android --variant release",
+    "ios": "expo run:ios --device",
     "web": "expo start --web"
   },
   "dependencies": {
