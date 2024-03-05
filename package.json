@@ -5,9 +5,9 @@
   "scripts": {
     "dev": "expo start",
     "android": "expo run:android",
-    "android-build": "expo run:android --variant release",
+    "android-build": "expo run:android --device --variant release",
     "ios": "expo run:ios --device",
-    "web": "expo start --web"
+    "ios-build": "expo run:ios --device --configuration Release"
   },
   "dependencies": {
     "@react-native-async-storage/async-storage": "^1.22.3",
@@ -38,6 +38,7 @@
   },
   "devDependencies": {
     "@babel/core": "^7.20.0",
+    "babel-plugin-module-resolver": "^5.0.0",
     "nativewind": "^2.0.11",
     "tailwindcss": "3.3.2"
   },
