@@ -7,22 +7,47 @@ import EntriesScreen from '@/screens/Entries/EntriesScreen'
 import ProfileScreen from '@/screens/Profile/ProfileScreen'
 import { SquaresFour, ListDashes, User } from 'phosphor-react-native'
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs'
+import { useColorScheme } from 'nativewind'
+import colors from 'tailwindcss/colors'
+
+const tabsLight = {
+  tabBarActiveTintColor: colors.white,
+  tabBarInactiveTintColor: colors.indigo[200],
+  tabBarActiveBackgroundColor: colors.indigo[500],
+  tabBarInactiveBackgroundColor: colors.indigo[600],
+  headerTintColor: colors.white,
+  headerStyle: { backgroundColor: colors.indigo[600] },
+}
+
+const tabsDark = {
+  tabBarActiveTintColor: colors.indigo[600],
+  tabBarInactiveTintColor: colors.white,
+  tabBarActiveBackgroundColor: colors.gray[800],
+  tabBarInactiveBackgroundColor: colors.gray[900],
+  headerTintColor: colors.white,
+  headerStyle: { backgroundColor: colors.gray[900] },
+}
 
 const Stack = createStackNavigator()
 
 function EntriesStack () {
-  return (<Stack.Navigator screenOptions={{ headerShown: true }}>
-    <Stack.Screen name="ListEntries" component={EntriesScreen} options={{title: 'Runs'}} />
-    <Stack.Screen name="EditEntry" component={EditEntryScreen} options={{title: 'Edit Run'}} />
-    <Stack.Screen name="AddEntry" component={AddEntryScreen} options={{title: 'Add Run'}} />
+  const { colorScheme } = useColorScheme()
+
+  return (<Stack.Navigator screenOptions={{ headerShown: true, ...(colorScheme === 'dark' ? tabsDark : tabsLight)  }}>
+    <Stack.Screen name="ListEntries" component={EntriesScreen} options={{ title: 'Runs' }} />
+    <Stack.Screen name="EditEntry" component={EditEntryScreen} options={{ title: 'Edit Run' }} />
+    <Stack.Screen name="AddEntry" component={AddEntryScreen} options={{ title: 'Add Run' }} />
   </Stack.Navigator>)
 }
 
 const Tab = createBottomTabNavigator()
 
-function MyTabs () {
+export default function () {
+  const { colorScheme } = useColorScheme()
+  const tabBarStyles = { tabBarStyle: { height: 83 }, tabBarItemStyle: { paddingBottom: 7, paddingTop: 5 }}
+
   return (
-    <Tab.Navigator>
+    <Tab.Navigator screenOptions={{...tabBarStyles, ...(colorScheme === 'dark' ? tabsDark : tabsLight) }}>
       <Tab.Screen name="Dashboard" component={DashboardScreen} options={{
         tabBarLabel: 'Dashboard',
         tabBarIcon: ({ color }) => (
@@ -41,9 +66,7 @@ function MyTabs () {
         tabBarIcon: ({ color }) => (
           <User name="home" color={color} size={26} />
         ),
-      }}  />
+      }} />
     </Tab.Navigator>
   )
 }
-
-export default MyTabs

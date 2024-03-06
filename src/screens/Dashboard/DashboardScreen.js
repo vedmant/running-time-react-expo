@@ -2,14 +2,17 @@ import React, { useState } from 'react'
 import { Dimensions, RefreshControl, StyleSheet, Text, View, ScrollView, KeyboardAvoidingView, Platform } from 'react-native'
 import { LineChart } from 'react-native-chart-kit'
 import Panel from '@/components/Panel'
-import EntryForm from '../Entries/EntryForm'
+import EntryForm from '@/screens/Entries/EntryForm'
 import { useGeneralStore } from '@/stores/general'
+import { useColorScheme } from 'nativewind'
+import colors from 'tailwindcss/colors'
 
 export default function () {
   const [loading, setLoading] = useState(false)
   const [booted, setBooted] = useState(false)
   const dashboard = useGeneralStore(s => s.dashboard)
   const loadDashboard = useGeneralStore(s => s.loadDashboard)
+  const isDark = useColorScheme().colorScheme === 'dark'
 
   const dispatchLoadDashboard = async () => {
     setLoading(true)
@@ -30,22 +33,22 @@ export default function () {
     <KeyboardAvoidingView behavior={Platform.OS === 'ios' ? 'padding' : 'height'}>
       <ScrollView
         contentContainerStyle={{padding: 10}}
-        className="gap-y-2"
+        className="gap-y-2 bg-gray-100 dark:bg-gray-800"
         refreshControl={
-          <RefreshControl onRefresh={onRefresh} refreshing={loading} />
+          <RefreshControl onRefresh={onRefresh} refreshing={loading} tintColor={isDark ? colors.gray[200] : colors.gray[700]} />
         }>
         <Panel header="This week">
-          <Text>
+          <Text className="dark:text-white">
             <Text>Records: </Text>
             <Text className="font-bold">{dashboard.weekly_count}</Text>
           </Text>
-          <Text>
+          <Text className="dark:text-white">
             <Text>Average speed: </Text>
             <Text className="font-bold">
               {Math.round((dashboard.weekly_avg_speed || 0) * 10) / 10} km/h
             </Text>
           </Text>
-          <Text>
+          <Text className="dark:text-white">
             <Text>Average pace: </Text>
             <Text className="font-bold">
               {Math.round((dashboard.weekly_avg_pace || 0) * 10) / 10} min/km
@@ -53,17 +56,17 @@ export default function () {
           </Text>
         </Panel>
         <Panel header="Best results">
-          <Text>
+          <Text className="dark:text-white">
             <Text>Best speed: </Text>
             <Text className="font-bold">
               {Math.round(dashboard.max_speed * 10) / 10} km/h
             </Text>
           </Text>
-          <Text>
+          <Text className="dark:text-white">
             <Text>Longest distance: </Text>
             <Text className="font-bold">{dashboard.max_distance || 0} km</Text>
           </Text>
-          <Text>
+          <Text className="dark:text-white">
             <Text>Longest run: </Text>
             <Text className="font-bold">{dashboard.max_time || 0}</Text>
           </Text>
@@ -90,12 +93,12 @@ export default function () {
               yAxisSuffix={' km'}
               paddingLeft={0}
               chartConfig={{
-                backgroundColor: '#fff',
-                backgroundGradientFrom: '#fff',
-                backgroundGradientTo: '#fff',
+                backgroundColor: isDark ? colors.gray[700] : '#fff',
+                backgroundGradientFrom: isDark ? colors.gray[700] : '#fff',
+                backgroundGradientTo: isDark ? colors.gray[700] : '#fff',
                 decimalPlaces: 0, // optional, defaults to 2dp
-                color: (opacity = 1) => `rgba(0, 0, 0, ${opacity})`,
-                labelColor: (opacity = 1) => `rgba(0, 0, 0, ${opacity})`,
+                color: (opacity = 1) => isDark ? `rgba(255, 255, 255, ${opacity})` : `rgba(0, 0, 0, ${opacity})`,
+                labelColor: (opacity = 1) => isDark ? `rgba(255, 255, 255, ${opacity})` : `rgba(0, 0, 0, ${opacity})`,
                 propsForDots: {
                   r: '6',
                   strokeWidth: '2',
@@ -117,7 +120,7 @@ export default function () {
                       { backgroundColor: 'rgb(220, 57, 18)' },
                     ]}
                   />
-                  <Text> - Speed</Text>
+                  <Text className="dark:text-white"> - Speed</Text>
                 </View>
                 <View style={[styles.legendRow, { paddingBottom: 15 }]}>
                   <View
@@ -126,7 +129,7 @@ export default function () {
                       { backgroundColor: 'rgb(51, 102, 204)' },
                     ]}
                   />
-                  <Text> - Distance</Text>
+                  <Text className="dark:text-white"> - Distance</Text>
                 </View>
               </View>
             </View>

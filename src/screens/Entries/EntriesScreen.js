@@ -7,12 +7,15 @@ import { Pencil, Plus, Trash } from 'phosphor-react-native'
 import { useEntriesStore } from '@/stores/entries'
 import { useNavigation } from '@react-navigation/native'
 import Button from '@/components/Button'
+import colors from 'tailwindcss/colors'
+import { useColorScheme } from 'nativewind'
 
 export default function () {
   const navigation = useNavigation()
   const entries = useEntriesStore(s => s.entries)
   const [loading, setLoading] = useState(false)
   const [loadingMore, setLoadingMore] = useState(false)
+  const isDark = useColorScheme().colorScheme === 'dark'
 
   async function loadEntries () {
     setLoading(true)
@@ -50,17 +53,17 @@ export default function () {
       <Panel className="mb-2">
         <View className="flex flex-row">
           <View className="flex-1">
-            <Text>
+            <Text className="dark:text-white">
               Date: {dayjs(item.date).format('MM/DD/YY')}
             </Text>
-            <Text>Distance: {item.distance} km</Text>
-            <Text>Time: {item.time}</Text>
+            <Text className="dark:text-white">Distance: {item.distance} km</Text>
+            <Text className="dark:text-white">Time: {item.time}</Text>
           </View>
           <View style={{ flex: 1 }}>
-            <Text>
+            <Text className="dark:text-white">
               Avg. Speed: {Math.round(item.speed * 10) / 10}
             </Text>
-            <Text>
+            <Text className="dark:text-white">
               Avg. Pace: {Math.round(item.pace * 10) / 10}
             </Text>
           </View>
@@ -86,13 +89,13 @@ export default function () {
 
     return (
       <View>
-        <ActivityIndicator animating size="large" />
+        <ActivityIndicator animating size="large" color={isDark ? colors.gray[200] : colors.gray[700]} />
       </View>
     )
   }
 
   return (
-    <View className="flex-1">
+    <View className="flex-1 bg-gray-100 dark:bg-gray-800">
       <FlatList
         className="flex-1"
         data={entries.data}
@@ -100,7 +103,7 @@ export default function () {
         renderItem={({ item }) => renderItem(item)}
         keyExtractor={item => item.id + ''}
         refreshControl={
-          <RefreshControl onRefresh={loadEntries} refreshing={loading} />
+          <RefreshControl onRefresh={loadEntries} refreshing={loading} tintColor={isDark ? colors.gray[200] : colors.gray[700]} />
         }
         onEndReached={loadMore}
         onEndReachedThreshold={0.5}
@@ -108,7 +111,7 @@ export default function () {
         ListEmptyComponent={
           loading ? null : (
             <View className="justify-center flex-1 flex-row">
-              <Text>The list is empty</Text>
+              <Text className="dark:text-white">The list is empty</Text>
             </View>
           )
         }

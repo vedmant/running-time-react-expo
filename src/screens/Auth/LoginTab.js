@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import { View } from 'react-native'
+import { ScrollView } from 'react-native'
 import Toast from 'react-native-root-toast'
 import Panel from '@/components/Panel'
 import { Lock, User } from 'phosphor-react-native'
@@ -38,7 +38,7 @@ export default function () {
   }
 
   return (
-    <View className="p-2">
+    <ScrollView className="p-2" enableOnAndroid>
       <Panel>
         <InputGroup
           label="Email"
@@ -65,6 +65,6 @@ export default function () {
           className="mt-4"
         />
       </Panel>
-    </View>
+    </ScrollView>
   )
 }

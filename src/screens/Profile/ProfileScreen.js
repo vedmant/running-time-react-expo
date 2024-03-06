@@ -7,7 +7,7 @@ import Button from '@/components/Button'
 
 export default function () {
   return (
-    <ScrollView className="p-2">
+    <ScrollView className="p-2 bg-gray-100 dark:bg-gray-800">
       <Button
         label="Logout"
         className="mb-4"

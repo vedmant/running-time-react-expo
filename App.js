@@ -4,11 +4,11 @@ import AppNavigator from '@/navigation/AppNavigator'
 import 'react-native-gesture-handler'
 import { SafeAreaProvider } from 'react-native-safe-area-context'
 
-export default function App() {
+export default function App () {
   return (
-    <SafeAreaProvider>
+    <SafeAreaProvider className="flex-1 dark:bg-gray-900">
       <AppNavigator />
-      <StatusBar style="auto" />
+      <StatusBar style="light" />
     </SafeAreaProvider>
   )
 }
