@@ -9,6 +9,7 @@ import { SquaresFour, ListDashes, User } from 'phosphor-react-native'
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs'
 import { useColorScheme } from 'nativewind'
 import colors from 'tailwindcss/colors'
+import { Platform } from 'react-native'
 
 const tabsLight = {
   tabBarActiveTintColor: colors.white,
@@ -44,10 +45,10 @@ const Tab = createBottomTabNavigator()
 
 export default function () {
   const { colorScheme } = useColorScheme()
-  const tabBarStyles = { tabBarStyle: { height: 83 }, tabBarItemStyle: { paddingBottom: 7, paddingTop: 5 }}
+  const iosTabBarStyles = { tabBarStyle: { height: 83 }, tabBarItemStyle: { paddingBottom: 7, paddingTop: 5 }}
 
   return (
-    <Tab.Navigator screenOptions={{...tabBarStyles, ...(colorScheme === 'dark' ? tabsDark : tabsLight) }}>
+    <Tab.Navigator screenOptions={{...(Platform.OS === 'ios' ? iosTabBarStyles: {}), ...(colorScheme === 'dark' ? tabsDark : tabsLight) }}>
       <Tab.Screen name="Dashboard" component={DashboardScreen} options={{
         tabBarLabel: 'Dashboard',
         tabBarIcon: ({ color }) => (
