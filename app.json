@@ -3,7 +3,7 @@
     "name": "RunningTime",
     "slug": "running-time",
     "scheme": "running-time",
-    "version": "1.2.0",
+    "version": "1.2.1",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
     "userInterfaceStyle": "automatic",
@@ -23,7 +23,7 @@
       "bundleIdentifier": "com.vedmant.running-time"
     },
     "android": {
-      "versionCode": 3145732,
+      "versionCode": 3145733,
       "adaptiveIcon": {
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#ffffff"
