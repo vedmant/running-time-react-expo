@@ -12,6 +12,8 @@
       "resizeMode": "contain",
       "backgroundColor": "#ffffff",
       "dark": {
+        "image": "./assets/splash.png",
+        "resizeMode": "contain",
         "backgroundColor": "#6b7280"
       }
     },
@@ -20,7 +22,7 @@
     ],
     "ios": {
       "supportsTablet": true,
-      "bundleIdentifier": "com.vedmant.running-time"
+      "bundleIdentifier": "com.vedmant.runningtime"
     },
     "android": {
       "versionCode": 3145733,

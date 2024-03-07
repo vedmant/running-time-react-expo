@@ -48,6 +48,18 @@ It will open Expo tab in your browser where you can select to run it on Android 
 - Admin panel for admin user
 - Continuos integration setup
 
+
+### How to build and run on iOs device
+
+1. `bunx expo prebuild`
+2. `open ios/YourProject.xcworkspace`
+3. Go to project settings "Signing & Capabilities" and select your team
+4. Go to project settings "Signing & Capabilities" and remove "Push Notifications"
+5. Click on top bar your project name, select "Edit Scheme", select "Build Configuration" - Release
+6. Build bundle with `bun ios-bundle`
+7. In Xcode in Build phases -> Bundle React Native code and images -> Check off "For install builds only" if it's checked
+8. Go to Xcode and run the project, select your connected device
+
 ### License ###
 
 And of course:
