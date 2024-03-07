@@ -25,6 +25,8 @@ Demo login: `user@gmail.com` and password: `123456`
 
 ### Installation ###
 
+Install Bun if not installed `curl -fsSL https://bun.sh/install | bash`
+
 ```bash
 git clone https://github.com/vedmant/running-time-react-expo # To clone repo
 cd running-time-react-expo

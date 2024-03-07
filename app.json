@@ -23,7 +23,7 @@
       "bundleIdentifier": "com.vedmant.running-time"
     },
     "android": {
-      "ersionCode": 3145732,
+      "versionCode": 3145732,
       "adaptiveIcon": {
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#ffffff"
