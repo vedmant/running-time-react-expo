@@ -1,11 +1,25 @@
 import React, { useState } from 'react'
-import { Dimensions, RefreshControl, StyleSheet, Text, View, ScrollView, KeyboardAvoidingView, Platform } from 'react-native'
+import { Dimensions, KeyboardAvoidingView, Platform, RefreshControl, ScrollView, StyleSheet, Text, View } from 'react-native'
 import { LineChart } from 'react-native-chart-kit'
 import Panel from '@/components/Panel'
 import EntryForm from '@/screens/Entries/EntryForm'
 import { useGeneralStore } from '@/stores/general'
 import { useColorScheme } from 'nativewind'
 import colors from 'tailwindcss/colors'
+import Button from '@/components/Button'
+import { useBackgroundPermissions, useForegroundPermissions } from 'expo-location'
+import { useLocationData, useLocationTracking } from '@/services/location'
+import { Play, Stop } from 'phosphor-react-native'
+
+function useAskPermissions () {
+  const [foregroundPermission, askForegroundPermission] = useForegroundPermissions()
+  const [backgroundPermission, askBackgroundPermission] = useBackgroundPermissions()
+
+  return async () => {
+    await askForegroundPermission()
+    await askBackgroundPermission()
+  }
+}
 
 export default function () {
   const [loading, setLoading] = useState(false)
@@ -13,6 +27,9 @@ export default function () {
   const dashboard = useGeneralStore(s => s.dashboard)
   const loadDashboard = useGeneralStore(s => s.loadDashboard)
   const isDark = useColorScheme().colorScheme === 'dark'
+  const askPermissions = useAskPermissions()
+  const { locations, distance, speed, elevation, descend } = useLocationData()
+  const tracking = useLocationTracking()
 
   const dispatchLoadDashboard = async () => {
     setLoading(true)
@@ -20,7 +37,7 @@ export default function () {
     setLoading(false)
   }
 
-  if (!booted) {
+  if (! booted) {
     dispatchLoadDashboard()
     setBooted(true)
   }
@@ -29,14 +46,50 @@ export default function () {
     dispatchLoadDashboard()
   }
 
+  const trackRun = async () => {
+    await askPermissions()
+    await tracking.clearTracking()
+    await tracking.startTracking()
+  }
+
+  const stopRun = async () => {
+    await tracking.stopTracking()
+    await tracking.clearTracking()
+  }
+
   return (
-    <KeyboardAvoidingView behavior={Platform.OS === 'ios' ? 'padding' : 'height'}>
+    <KeyboardAvoidingView className="flex-1" behavior={Platform.OS === 'ios' ? 'padding' : 'height'}>
       <ScrollView
-        contentContainerStyle={{padding: 10}}
+        contentContainerStyle={{ padding: 10 }}
         className="gap-y-2 bg-gray-100 dark:bg-gray-800"
         refreshControl={
           <RefreshControl onRefresh={onRefresh} refreshing={loading} tintColor={isDark ? colors.gray[200] : colors.gray[700]} />
         }>
+
+        <View className="pb-2 pt-2">
+          {tracking.isTracking
+            ? <>
+              {distance === 0
+                ? <Text className="dark:text-white">You didn't walk yet, start the location tracking and start walking.</Text>
+                : <Text className="dark:text-white">You run {distance} meters. Speed: {speed} km/h. Elevation: {elevation} m. Descend {descend} m.</Text>
+              }
+              <Button label="Stop" icon={<Stop weight="fill" />} className="mt-2" onPress={stopRun} />
+            </>
+            : <Button label="Track My Run"
+                      className="rounded-full bg-amber-700"
+                      pressableStyle={{ flexDirection: 'column' }}
+                      icon={<Play size={40} weight="fill" className="mb-2" />}
+                      onPress={trackRun}
+            />
+          }
+        </View>
+
+        {locations.slice(-5).map((item) => (
+          <View className="flex flex-row gap-2" key={item.timestamp}>
+            <Text className="dark:text-white">{JSON.stringify(item.coords)}</Text>
+          </View>
+        ))}
+
         <Panel header="This week">
           <Text className="dark:text-white">
             <Text>Records: </Text>
