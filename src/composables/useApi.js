@@ -37,6 +37,7 @@ export default async function (url, options = {}) {
     const err = new Error(`${resp.status} ${resp.statusText}`)
     err.response = resp
     err.response.data = await resp.json()
+    console.error(err.response.data)
     throw err
   }
 

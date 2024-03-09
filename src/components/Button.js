@@ -1,7 +1,7 @@
 import React, { cloneElement } from 'react'
 import { ActivityIndicator, Pressable, Text, View } from 'react-native'
 
-export default function ({ label, loading, icon, style, pressableStyle, ...props }) {
+export default function ({ label, loading, icon, style, pressableStyle, textStyle, ...props }) {
   const iconProps = { weight: 'bold', size: 18, color: 'white', style: { marginRight: 6 } }
 
   return (
@@ -15,7 +15,7 @@ export default function ({ label, loading, icon, style, pressableStyle, ...props
           ? <ActivityIndicator {...iconProps} />
           : icon && cloneElement(icon, { ...iconProps, ...icon?.props })
         }
-        <Text className="text-white">{label}</Text>
+        <Text className="text-white" style={textStyle}>{label}</Text>
       </Pressable>
     </View>
   )

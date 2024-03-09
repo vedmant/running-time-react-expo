@@ -23,41 +23,51 @@ export function useLocationTracking() {
       setIsTracking(false)
     },
     clearTracking: async () => {
+      console.log('clearTracking', isTracking)
       if (isTracking) {
         await Track.stopTracking()
+        console.log('await Track.stopTracking()')
         setIsTracking(false)
       }
+      console.log('await Storage.clearLocations()')
       await Storage.clearLocations()
     },
   }
 }
 
+const baseSummary = { distance: 0, elevation: 0, descend: 0 }
+
 export function useLocationData(interval = 1000) {
   const [locations, setLocations] = useState<LocationObject[]>([])
-  const [distance, setDistance] = useState(0)
-  const [elevation, setElevation] = useState(0)
-  const [descend, setDescend] = useState(0)
+  const [summary, setSummary] = useState(baseSummary)
 
   useEffect(() => {
     const update = async () => {
-      console.log('update')
       const storedLocations = await Storage.getLocations()
+
+      // Clear locations
       if (!storedLocations.length && locations.length) {
         setLocations([])
+        setSummary(baseSummary)
+        return
       }
+
+      // No new locations added
       if (storedLocations.length <= locations.length) {
         return
       }
+
       setLocations(storedLocations)
+
+      // Update summary data
       if (locations.length > 1) {
         const prev = locations[locations.length - 2].coords
         const next = locations[locations.length - 1].coords
-        setDistance(distance + getDistance(prev, next, 0.01))
-        if (next.altitude > prev.altitude) {
-          setElevation(elevation + next.altitude - prev.altitude)
-        } else {
-          setDescend(descend - next.altitude - prev.altitude)
-        }
+        setSummary({
+          distance: summary.distance + getDistance(prev, next, 0.01),
+          elevation: summary.elevation + Math.min(0, next.altitude - prev.altitude),
+          descend: summary.descend + Math.abs(Math.max(0, next.altitude - prev.altitude)),
+        })
       }
     }
     update()
@@ -65,12 +75,12 @@ export function useLocationData(interval = 1000) {
     const timerId = window.setInterval(update, interval)
 
     return () => window.clearInterval(timerId)
-  }, [locations])
+  }, [locations, summary])
 
   const speed = useMemo(() => {
     return Math.round((locations[locations.length - 1]?.coords?.speed || 0) * 3.6)
   }, [locations])
 
-  return { locations, distance, speed, elevation, descend }
+  return { locations, summary, speed }
 }
 

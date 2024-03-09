@@ -56,7 +56,7 @@ export default function () {
             <Text className="dark:text-white">
               Date: {dayjs(item.date).format('MM/DD/YY')}
             </Text>
-            <Text className="dark:text-white">Distance: {item.distance} km</Text>
+            <Text className="dark:text-white">Distance: {Math.round(item.distance * 100) / 100} km</Text>
             <Text className="dark:text-white">Time: {item.time}</Text>
           </View>
           <View style={{ flex: 1 }}>

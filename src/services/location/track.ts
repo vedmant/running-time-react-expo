@@ -53,13 +53,12 @@ export async function stopTracking() {
  * This method isn't "directly" connected to React, that's why we store the data locally.
  */
 TaskManager.defineTask(LOCATION_TASK_NAME, async (event) => {
-  console.log(event)
   if (event.error) {
     return console.error('[tracking]', 'Something went wrong within the background location task...', event.error)
   }
 
   const locations = (event.data as any).locations as Location.LocationObject[]
-  console.log('[tracking]', 'Received new locations', locations)
+  // console.log('[tracking]', 'Received new locations', locations)
 
   try {
     // have to add it sequentially, parses/serializes existing JSON

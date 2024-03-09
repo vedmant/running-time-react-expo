@@ -10,6 +10,10 @@ import Button from '@/components/Button'
 import { useBackgroundPermissions, useForegroundPermissions } from 'expo-location'
 import { useLocationData, useLocationTracking } from '@/services/location'
 import { Play, Stop } from 'phosphor-react-native'
+import MapPath from '@/components/MapPath'
+import dayjs from 'dayjs'
+import { useEntriesStore } from '@/stores/entries'
+import Toast from 'react-native-root-toast'
 
 function useAskPermissions () {
   const [foregroundPermission, askForegroundPermission] = useForegroundPermissions()
@@ -21,6 +25,13 @@ function useAskPermissions () {
   }
 }
 
+function formatDuration (seconds) {
+  const date = new Date(0)
+  date.setSeconds(seconds)
+  return date.toISOString().substring(11, 19)
+}
+
+
 export default function () {
   const [loading, setLoading] = useState(false)
   const [booted, setBooted] = useState(false)
@@ -28,8 +39,10 @@ export default function () {
   const loadDashboard = useGeneralStore(s => s.loadDashboard)
   const isDark = useColorScheme().colorScheme === 'dark'
   const askPermissions = useAskPermissions()
-  const { locations, distance, speed, elevation, descend } = useLocationData()
+  const { locations, summary, speed } = useLocationData()
   const tracking = useLocationTracking()
+  const [start, setStart] = useState(dayjs())
+
 
   const dispatchLoadDashboard = async () => {
     setLoading(true)
@@ -50,11 +63,24 @@ export default function () {
     await askPermissions()
     await tracking.clearTracking()
     await tracking.startTracking()
+    setStart(dayjs())
   }
 
   const stopRun = async () => {
-    await tracking.stopTracking()
+    const form = {
+      date: dayjs().format('MM/DD/YYYY'),
+      distance: summary.distance / 1000,
+      time: formatDuration(dayjs().diff(start, 'second')),
+    }
+
     await tracking.clearTracking()
+
+    if (summary.distance > 100) {
+      await useEntriesStore.getState().storeEntry(form)
+      Toast.show('Your run was saved')
+    } else {
+      Toast.show('Run minimum 10 meters to save the record')
+    }
   }
 
   return (
@@ -66,29 +92,35 @@ export default function () {
           <RefreshControl onRefresh={onRefresh} refreshing={loading} tintColor={isDark ? colors.gray[200] : colors.gray[700]} />
         }>
 
-        <View className="pb-2 pt-2">
+        <View className="pb-2 pt-2 items-center">
           {tracking.isTracking
             ? <>
-              {distance === 0
-                ? <Text className="dark:text-white">You didn't walk yet, start the location tracking and start walking.</Text>
-                : <Text className="dark:text-white">You run {distance} meters. Speed: {speed} km/h. Elevation: {elevation} m. Descend {descend} m.</Text>
-              }
+              <Text className="dark:text-white">
+                Time: {formatDuration(dayjs().diff(start, 'second'))}{'\n'}
+                Distance: {Math.round(summary.distance)} m{'\n'}
+                Speed: {speed} km/h{'\n'}
+                Elevation: {Math.round(summary.elevation)} m{'\n'}
+                Descend: {Math.round(summary.descend)} m
+              </Text>
               <Button label="Stop" icon={<Stop weight="fill" />} className="mt-2" onPress={stopRun} />
             </>
-            : <Button label="Track My Run"
-                      className="rounded-full bg-amber-700"
+            : <Button label="Start"
+                      className="rounded-full bg-fuchsia-700 w-24 py21 shadow-lg shadow-gray-700 py-1"
                       pressableStyle={{ flexDirection: 'column' }}
-                      icon={<Play size={40} weight="fill" className="mb-2" />}
+                      textStyle={{ fontWeight: 'bold' }}
+                      icon={<Play size={40} weight="fill" className="mb-1" />}
                       onPress={trackRun}
             />
           }
         </View>
 
-        {locations.slice(-5).map((item) => (
-          <View className="flex flex-row gap-2" key={item.timestamp}>
-            <Text className="dark:text-white">{JSON.stringify(item.coords)}</Text>
-          </View>
-        ))}
+        <MapPath locations={locations} className="h-64" />
+
+        {/*{locations.slice(-5).map((item) => (*/}
+        {/*  <View className="flex flex-row gap-2" key={item.timestamp}>*/}
+        {/*    <Text className="dark:text-white">{JSON.stringify(item.coords)}</Text>*/}
+        {/*  </View>*/}
+        {/*))}*/}
 
         <Panel header="This week">
           <Text className="dark:text-white">
